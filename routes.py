@@ -14,6 +14,7 @@ def make_app():
         (r"/login", login),
         (r"/vote", vote),
         (r"/index", index),
+        (r"/WebSocketHandler", WebsocketHandler),
     ])
 
 if __name__ == "__main__":
