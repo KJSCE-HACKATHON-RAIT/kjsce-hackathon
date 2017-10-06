@@ -19,7 +19,7 @@
 
 
 if (navigator.getUserMedia) {
-   navigator.getUserMedia({ audio: false, video: { facingMode: { exact: "environment" } } },
+   navigator.getUserMedia({ audio: false, video: true },
       function(stream) {
          var video1 = document.querySelector('video');
          video1.srcObject = stream;
@@ -96,16 +96,16 @@ if (navigator.getUserMedia) {
     var imageData = canvas.toDataURL('image/png');
     id_image.setAttribute('value', imageData);
     id_image.setAttribute('type', imageData);
+    console.log(id_image);
     
     
-    
-    video.stop();
+//    video.stop();
 
     //var imgData = canvas.toDataURL('image/png');
     //image.setAttribute('type', canvas.toDataURL('image/png'))
     //var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
     //window.location.href=image;
-    
+    console.log("captured called");
 
   });
 

@@ -20,7 +20,27 @@ from django.core.files.base import ContentFile
 from django.core.files import File
 from decimal import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import cv2
 
+from PIL import Image
+from io import StringIO
+import numpy as np
+from django.contrib.staticfiles.templatetags.staticfiles import static
+hc = static("haarcascade_frontalface_default.xml")
+faceCascade = cv2.CascadeClassifier(hc)
+
+
+def readb64(base64_string):
+    sbuf = StringIO()
+    sbuf.write(base64.b64decode(base64_string))
+    pimg = Image.open(sbuf)
+    return cv2.cvtColor(np.array(pimg), cv2.COLOR_RGB2BGR)
+
+def data_uri_to_cv2_img(uri):
+    encoded_data = uri.split(',')[1]
+    nparr = np.fromstring(base64.b64decode(encoded_data), np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    return img
 
 #def Model_Form(request):
 #	form = PostForm(request.POST or None, request.FILES or None)
@@ -50,6 +70,8 @@ def Model_Form(request):
     results = Size_Chart.objects.get(Length_ID=min_id)
 
     if request.method == 'POST':
+#    if request:
+        print ("post called")
         form = PostForm(request.POST or None, request.FILES or None)
         Gender = request.POST.get('Gender','')
         image = request.POST.get('image', '')
@@ -57,12 +79,46 @@ def Model_Form(request):
         #filename = 'media/' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.png'
         filename = datetime.now().strftime("%Y%m%d-%H%M%S") + '.png'
         #output = open(filename, 'wb')
-        imgstr = imgstr.decode('base64')
+        # imgstr = imgstr.codecs.decode()
+        t = imgstr
+        imgstr = base64.b64decode(imgstr)
         #output.write(imgstr)
         formobj = Image_Chart()
         formobj.Gender = Gender
         #formobj.image.save(filename, File(output))
-        formobj.image.save(filename, ContentFile(imgstr))
+        cnt = ContentFile(imgstr)
+
+
+        gray = data_uri_to_cv2_img(image)
+        print(type(gray),gray)
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
+
+        # Draw a rectangle around the faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        bottomLeftCornerOfText = (0, 20)
+        fontScale = 1
+        fontColor = (0, 0, 255)
+        lineType = 2
+
+        cv2.putText(gray, 'People Count:-'+str(len(faces)),
+                    bottomLeftCornerOfText,
+                    font,
+                    fontScale,
+                    fontColor,
+                    lineType)
+
+        cnt = gray
+        formobj.image.save(filename, cnt)
+
         formobj.save()
         #output.close()
         #tempimg = cStringIO.StringIO(imgstr)
@@ -82,6 +138,7 @@ def Model_Form(request):
         return render(request, 'modal1.html',{'results': results }, {'form': form}, )
         #return HttpResponse(status=204)
     else:
+        print ("Not called")
         form = PostForm()
     return render(request, 'modal1.html',  {'results': results}, {'form': form})
 
@@ -96,15 +153,15 @@ def Model_Form_tmp1(request):
         form = PostForm()
     return render(request, 'model.html', {'form': form})
 
-def Model_Form_tmp(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            Gender = request.POST.get('Gender','')        
-            formobj = Image_Chart(image = canvas, Gender = Gender)
-            formobj.save()
-            return HttpResponse("Submitted !!")
-    else:
-        form = DetailsForm()
-
-    return render(request, 'model.html')
+# def Model_Form_tmp(request):
+#     if request.method == 'POST':
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             Gender = request.POST.get('Gender','')
+#             formobj = Image_Chart(image = canvas, Gender = Gender)
+#             formobj.save()
+#             return HttpResponse("Submitted !!")
+#     else:
+#         form = DetailsForm()
+#
+#     return render(request, 'model.html')
