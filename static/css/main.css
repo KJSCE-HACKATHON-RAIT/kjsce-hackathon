@@ -1,0 +1,151 @@
+.booth {
+    width: 402px;
+    background-color: #fff;
+    border: 1px solid #020101;
+    margin: 0 auto;
+}
+
+.booth-capture-button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: cornflowerblue;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+#canvas {
+  display: none;
+}
+imgg {
+  position: fixed;
+  /*margin: auto;*/
+  top: 80px;
+  left: 195px;
+  width: 256px;
+  height: 360px;*/
+  z-index: 100;
+  /*background-color: rgba(255,255,255,.4);*/
+}
+videoo {
+  border: 1px solid #020101;
+  margin: auto;
+}
+
+.video-container {
+  position: relative;
+}
+video {
+  width: 280px;
+  height: 150px;
+  margin: auto;
+  vertical-align: middle;
+  
+}
+.overlay-desc {
+  background: rgba(0,0,0,0);
+  position: absolute;
+  /*
+  top: 0;
+  bottom: 0;
+  */
+  right: 0; 
+  left: 0;
+  
+  display: flex;
+
+  
+  align-items: center;
+
+  justify-content: center;
+  
+}
+canvas {
+  margin: auto;
+  border: 1px solid #020101;
+}
+
+
+
+.demo-card-wide.mdl-card {
+  width: 512px;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('https://getmdl.io/assets/demos/welcome_card.jpg') center / cover;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+
+body {
+  padding: 20px;
+  background: #fafafa;
+  position: relative;
+}
+
+  .modal-dialog {
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  padding: 0;
+}
+
+#video_overlays {
+  position: absolute;
+  /*margin: auto;*/
+  top: 0;
+  left: 0;
+  width: 512px;
+  height: 720px;*/
+  z-index: 100;
+  background-color: rgba(255,255,255,.4);
+  
+}
+
+.modal-content {
+  height: auto;
+  min-height: 100%;
+  border-radius: 0;
+  margin: auto;
+
+}
+
+.mybox{
+  display: none;
+}
+
+.myBox2{
+  margin: auto;
+}
+
+.overlay1{
+
+  margin: auto;
+}
+
+.flexBox {
+    display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox; /* TWEENER - IE 10 */
+    display: -webkit-flex; /* NEW - Chrome */
+    display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+    align-items: center;
+    width: 100%;
+}
+.droptown {
+    -webkit-box-flex: 1; /* OLD - iOS 6-, Safari 3.1-6 */
+    -moz-box-flex: 1; /* OLD - Firefox 19- */
+    -webkit-flex: 1; /* Chrome */
+    -ms-flex: 1; /* IE 10 */
+    flex: 1; /* NEW, */
+    margin-right: 4px;
+}
+.flexChild {
+    -webkit-box-flex: 2; /* OLD - iOS 6-, Safari 3.1-6 */
+    -moz-box-flex: 2; /* OLD - Firefox 19- */
+    -webkit-flex: 2; /* Chrome */
+    -ms-flex: 2; /* IE 10 */
+    flex: 2; /* NEW, */
+    margin
