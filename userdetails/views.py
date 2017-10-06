@@ -13,7 +13,7 @@ from PIL import Image
 from base64 import decodestring
 import base64
 import re
-import cStringIO
+from io import StringIO
 import os
 from datetime import datetime
 from django.core.files.base import ContentFile
