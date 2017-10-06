@@ -50,6 +50,8 @@ def Model_Form(request):
     results = Size_Chart.objects.get(Length_ID=min_id)
 
     if request.method == 'POST':
+#    if request:
+        print "post called"
         form = PostForm(request.POST or None, request.FILES or None)
         Gender = request.POST.get('Gender','')
         image = request.POST.get('image', '')
@@ -82,6 +84,7 @@ def Model_Form(request):
         return render(request, 'modal1.html',{'results': results }, {'form': form}, )
         #return HttpResponse(status=204)
     else:
+        print "Not called"
         form = PostForm()
     return render(request, 'modal1.html',  {'results': results}, {'form': form})
 

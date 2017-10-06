@@ -32,7 +32,7 @@
                 <div class="typeTag">
                     <p class="text-capitalize">
                         </p><div class="typeTag">                           
-                            <p class="text-right"  itemname="Action Grey Running Shoes" " itemimgurl="http://static12.jassets.com/p/Action-Grey-Running-Shoes-2009-789947-1-product.jpg" actiontype="4" category="Sports shoes" brandname="Action" department="Shoes" gender="men"  title="I Love It"><span class="fa fa-heart-o"></span><span></span></p>
+                            <p class="text-right"  itemname="Action Grey Running Shoes"  itemimgurl="http://static12.jassets.com/p/Action-Grey-Running-Shoes-2009-789947-1-product.jpg" actiontype="4" category="Sports shoes" brandname="Action" department="Shoes" gender="men"  title="I Love It"><span class="fa fa-heart-o"></span><span></span></p>
                         </div>
                     <p></p>
                 </div>
@@ -44,7 +44,7 @@
                     <div class="couponsImageHolder">
                         <img class="cloudzoom" alt="action Grey Running Shoes" id="zoom1" src="http://static12.jassets.com/p/Action-Grey-Running-Shoes-2009-789947-1-product.jpg" style="-webkit-user-select: none;">
                     </div>
-                </a>
+                
             </div>
 
             <!-- slider start here--> 
@@ -130,8 +130,9 @@
         </div>
         <div class="modal-body">
           
-          <form method="POST" action="" enctype="multipart/form-data"> <input name="csrfmiddlewaretoken" value="14NLxhdsM7Dv9godE88y2vABCndJqhu7dgqnR9ZIRyFksEH6UsMLNue7YXNYlZPe" type="hidden">
-
+          <form method="POST" action="" enctype="multipart/form-data"> 
+<!--              <input name="csrfmiddlewaretoken" value="14NLxhdsM7Dv9godE88y2vABCndJqhu7dgqnR9ZIRyFksEH6UsMLNue7YXNYlZPe" type="hidden">-->
+{% csrf_token %}
           <!-- <p><label for="id_image">Image:</label> <input type="file" name="image" required id="id_image" /></p>
 <p><label for="id_Gender">Gender:</label> <input type="text" name="Gender" required id="id_Gender" /></p> -->
           <!-- <p><label for="id_image">Image:</label> <input type="file" name="image" required id="id_image" ></p>-->
@@ -142,7 +143,7 @@
           <div class="video-container">
            <div class="overlay-desc">
            
-          <img class="img-responsive" src="/static/ui2.png" width="280">      
+<!--          <img class="img-responsive" src="/static/ui2.png" width="250">      -->
            
           </div>
           <!--
@@ -156,7 +157,9 @@
           -->
 
           <div class="modal-footer">
-          <button id="capture" type="submit" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#secondModal" data-dismiss="modal"> Take Photo</button>
+<!--          <button id="capture" type="submit" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#secondModal" data-dismiss="modal"> Take Photo</button>-->
+              <button id="capture" type="submit" class="btn btn-primary btn-block btn-lg" data-toggle="modal"  > Take Photo</button>
+              <input type="submit" value="save"/>
 
            <!--
             <input type='submit' class="btn btn-success btn-block" value='Create Post' />
@@ -175,6 +178,7 @@
           <label for="id_Gender" class="radio-inline"><input id="id_Gender" name="Gender" value="M" type="radio">Male </label>
           <label for="id_Gender" class="radio-inline"><input id="id_Gender" name="Gender" value="F" type="radio">Female </label>
           <input id="id_image" name="image" required="" type="file">
+            
           </div>
 
           </div>
@@ -215,12 +219,12 @@
             <img src="/static/intro.jpg" class="img-responsive" width="500" height="10" alt="intro">
             -->
             <span style="display:block; height: 60px;"></span>
-            <button id="Cart" type="button" class="btn btn-success   btn-lg"  data-dismiss="modal">  &ensp;  Add to Cart &ensp;   </button>
+            <button id="Cart" type="button" class="btn btn-success   btn-lg"  data-dismiss="modal">    Add to Cart    </button>
             <span style="display:block; height: 40px;"></span>
            
             <button id="Shop" type="button" class="btn btn-danger  btn-lg" data-dismiss="modal"> Continue Shopping</button>
             <p>  </p>
-            <span style="display:block; height: 80px;"></span>
+            <span style="display:block; height: 100px;"></span>
           
             
           </div>
