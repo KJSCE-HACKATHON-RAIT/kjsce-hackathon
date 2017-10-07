@@ -151,7 +151,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         elif tmp ==3 :
             #write redis
             kk = json.loads(r.get('block'))
-            kk[vote_id_hash] = kk[vote_hash]
+            kk['vote_id_hash'] = kk['vote_hash']
             r.set('block', json.dumps(kk))
             print "successfully written to redis: "
         
@@ -164,7 +164,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):        
         print message
         mess = json.loads(message)
-        
+        mess1={}
+        mess2={}
+        mess3={}
         #vote_id_hash
         sha = hasher.sha256()
         sha.update(str(mess['vote_name']) + str(mess['vote_type']))
@@ -175,9 +177,9 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         sha.update(str(mess['bit_id']))
         vote_hash = sha.hexdigest()
         
-        self.add_block(vote_id_hash, vote_hash)
+        self.add_block(str(mess['vote_name']), vote_hash)
         print "Block Added Successfully:  "
-        
+        kk =json.loads(r.get('vote'))
         for client in clients:
   		    client.write_message(message)
         

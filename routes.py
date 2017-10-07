@@ -5,7 +5,7 @@ from vote_api import *
 import json
 
 r = redis.StrictRedis(host='localhost', db=4)
-r.set('vote',json.dumps({'ctr':0,'rnd_no':0,'global_bit_id':0}))
+r.set('vote',json.dumps({'ctr':0,'rnd_no':0,'global_bit_id':0, 'count_no':0}))
 r.set('block',json.dumps({}))
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
