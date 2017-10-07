@@ -1,8 +1,12 @@
 import tornado.ioloop
 import tornado.web
-
+import redis
 from vote_api import *
+import json
 
+r = redis.StrictRedis(host='localhost', db=4)
+r.set('vote',json.dumps({'ctr':0,'rnd_no':0,'global_bit_id':0}))
+r.set('block',json.dumps({}))
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Blockchain Voting, ")
@@ -12,10 +16,10 @@ def make_app():
         (r"/", MainHandler),
         (r"/signup", signup),
         (r"/login", login),
-        (r"/vote", vote),
         (r"/index", index),
-        (r"/WebSocketHandler", WebsocketHandler),
-    ])
+        (r"/vote/([^/])", vote),
+        (r"/WebSocketHandler/([^/])", WebSocketHandler),
+    ], debug=True)
 
 if __name__ == "__main__":
     app = make_app()

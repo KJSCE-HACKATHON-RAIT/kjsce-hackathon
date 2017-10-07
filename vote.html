@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      var ws;
+      
+      function createChatEntry(username, message) {
+        var entry = document.createElement("div");
+        entry.class = "chat_entry";
+        
+        var dom_uname = document.createElement("span");
+        dom_uname.class = "chat_username";
+        dom_uname.innerHTML = username+": ";
+        entry.appendChild(dom_uname);
+        
+        var dom_msg = document.createElement("span");
+        dom_msg.class = "chat_message";
+        dom_msg.innerHTML = message;
+        entry.appendChild(dom_msg);
+        
+        return entry;
+      }
+      
+      function openWS(messageContainer) {
+        ws = new WebSocket("ws://localhost:8888/WebSocketHandler/" + {{ room_no }});
+        ws.onmessage = function(e) {
+          var data = JSON.parse(e.data);
+          messageContainer.appendChild(createChatEntry(data.bit_id, data.message));
+        };
+        ws.onclose = function(e) {
+          openWS(messageContainer);
+        };
+      }
+      
+      function sendMessage() {
+        var data = { bit_id: document.getElementById("bit_id").value,
+                     message: document.getElementById("message").value,
+                     vote_name: document.getElementById("vote_name").value,
+                     vote_type: document.getElementById("vote_type").value       
+                   };
+        
+        if(data.bit_id && data.message) {
+          ws.send(JSON.stringify(data));
+            window.location.href("")
+        }
+      }
+      
+      window.onload = function() {
+        var messageContainer = document.getElementById("chat");
+        openWS(messageContainer);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chat" style="width: 100%; height: 40em; overflow: scroll; font-family: Arial"></div>
+    <div id="input_area">
+      <input id="bit_id" type="text" placeholder="Yourbit_id" style="display: block; width: 200px">
+        <input id="vote_type" type="text" placeholder="vote_type" style="display: block; width: 200px">
+        <input id="vote_name" type="text" placeholder="vote_name" style="display: block; width: 200px">
+      <textarea id="message" placeholder="Your message" value="Voted" style="display: block; width: 400px"></textarea>
+      <button onclick="sendMessage()" style="display: block">Send</button>
+    </div>
+  </body>
+</html>
