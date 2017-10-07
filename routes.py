@@ -16,14 +16,17 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         kk = json.loads(r.get('vote_data'))
         vote = json.loads(r.get('vote'))['pipe_ctr']
-        hash_datas = json.loads(r.get('hash_data')).values()
+        temp = json.loads(r.get('hash_data')).values()
+        hash_datas =[]
+        if len(temp)%3 ==0:
+            hash_datas = temp 
 #        if vote%3 ==0:
 #            dat0 = []     
 #            self.render("dashboard.html",vote_cnt = kk['vote_cnt'], data0=dat0)
 #        else:
 #            self.render("dashboard.html",vote_cnt = kk['vote_cnt'])
         print hash_datas
-        self.render("dashboard.html",vote_cnt = kk['vote_cnt'], hash_datas=hash_datas)
+        self.render("dashboard.html",vote_cnt = kk['vote_cnt'], hash_datas=temp )
 
 def make_app():
     return tornado.web.Application([

@@ -143,7 +143,7 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             #write mongo
             connection = MongoClient("ds149954.mlab.com", 49954)
             db = connection['visualizer']
-            db.authenticate('temp', 'temp123')
+            db.authenticate('abc', 'abc123')
             #db.mynewcollection.insert({ "temp123" : "new_temp_inserter" })
             db.mynewcollection.insert({ vote_id_hash: vote_hash })
         elif tmp ==3 :

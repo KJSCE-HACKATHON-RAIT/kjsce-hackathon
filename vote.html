@@ -1,96 +1,74 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+      <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <script
-            src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-
     <script type="text/javascript">
-
-        var ws;
-
-
-        function createChatEntry(username, message) {
-            var entry = document.createElement("div");
-            entry.class = "chat_entry";
-
-            var dom_uname = document.createElement("span");
-            dom_uname.class = "chat_username";
-            dom_uname.innerHTML = username+": ";
-            entry.appendChild(dom_uname);
-
-            var dom_msg = document.createElement("span");
-            dom_msg.class = "chat_message";
-            dom_msg.innerHTML = message;
-            entry.appendChild(dom_msg);
-
-            return entry;
+      var ws;
+      
+      function createChatEntry(username, message) {
+        var entry = document.createElement("div");
+        entry.class = "chat_entry";
+        
+        var dom_uname = document.createElement("span");
+        dom_uname.class = "chat_username";
+        dom_uname.innerHTML = username+": ";
+        entry.appendChild(dom_uname);
+        
+        var dom_msg = document.createElement("span");
+        dom_msg.class = "chat_message";
+        dom_msg.innerHTML = message;
+        entry.appendChild(dom_msg);
+        
+        return entry;
+      }
+      
+      function openWS(messageContainer) {
+        ws = new WebSocket("ws://localhost:8888/WebSocketHandler/" + {{ room_no }});
+        ws.onmessage = function(e) {
+          var data = JSON.parse(e.data);
+          messageContainer.appendChild(createChatEntry(data.bit_id, data.message));
+        };
+        ws.onclose = function(e) {
+          openWS(messageContainer);
+        };
+      }
+      
+      function sendMessage() {
+        var data = { bit_id: document.getElementById("bit_id").value,
+                     message: 'nil',
+                     vote_name: document.getElementById("vote_name").value,
+                     vote_type: document.getElementById("vote_type").value       
+                   };
+        
+        if(data.bit_id && data.message) {
+          ws.send(JSON.stringify(data));
+            window.location.href= "http://localhost:8888/";
         }
-
-        function openWS(messageContainer) {
-
-
-
-            ws = new WebSocket("ws://localhost:8888/WebSocketHandler/" + {{ room_no }});
-            ws.onmessage = function(e) {
-                var data = JSON.parse(e.data);
-                messageContainer.appendChild(createChatEntry(data.bit_id, data.message));
-            };
-            ws.onclose = function(e) {
-                openWS(messageContainer);
-            };
-        }
-
-        function sendMessage(el) {
-
-            var e = document.getElementById(el);
-
-            var data = { bit_id: document.getElementById("bit_id").value,
-                message: 'nil',
-                vote_name: document.getElementById("vote_name").value,
-                vote_type: e.options[e.selectedIndex].text
-            };
-
-            if(data.bit_id && data.message) {
-                ws.send(JSON.stringify(data));
-                window.location.href= "http://localhost:8888/";
-            }
-        }
-
-        window.onload = function() {
-            var messageContainer = document.getElementById("chat");
-            openWS(messageContainer);
-        }
-
+      }
+      
+      window.onload = function() {
+        var messageContainer = document.getElementById("chat");
+        openWS(messageContainer);
+      }
     </script>
-</head>
-<body>
-<div id="chat" style="width: 20%; height: 20em; overflow: scroll; font-family: Arial"></div>
-<div id="input_area">
-    <input id="bit_id" type="hidden" value="{{ bit_id }}" placeholder="Yourbit_id" style="display: block; width: 200px">
-    <div>
-        <select id="select1">
-            <option value="1">Modi</option>
-            <option value="2" selected="selected">Rahul</option>
-            <option value="3">Kejriwal</option>
-        </select>
-        <br/>
-        <button onClick="GetSelectedItem('select1');">Get Selected Item</button>
+  </head>
+  <body>
+<!--    <div id="chat" style="width: 20%; height: 20em; overflow: scroll; font-family: Arial"></div>-->
+    <div id="input_area" class = "container"><div class="col-sm-offset-4 col-sm-4">
+      <input id="bit_id" type="hidden" value="{{ bit_id }}" placeholder="Yourbit_id" style="display: block; width: 200px">
+        <input id="vote_type" type="text" placeholder="vote_type" style="display: block; width: 200px">
+        <input id="vote_name" type="text" placeholder="vote_name" style="display: block; width: 200px">
+<!--      <textarea id="message" placeholder="Your message" value="Voted" style="display: block; width: 400px"></textarea>-->
+      <button onclick="sendMessage()" style="display: block">Send</button>
     </div>
-    <input id="vote_name" type="text" placeholder="vote_type" style="display: block; width: 200px">
-    <!--      <textarea id="message" placeholder="Your message" value="Voted" style="display: block; width: 400px"></textarea>-->
-    <button onclick="sendMessage('select1')" style="display: block">Send</button>
-</div>
-</body>
+        </div>
+  </body>
 </html>
