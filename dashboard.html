@@ -64,35 +64,13 @@ tbody td, thead th {
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr>
-    <tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr>
-            <tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr>
-     <tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr>
-    <tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr><tr>
-        <td class="filterable-cell">Modi</td>
-        <td class="filterable-cell">Kejriwal</td>
-        <td class="filterable-cell">Rahul</td>
-    </tr>
+    {% for hash_data in hash_datas %}
+        <tr>
+        <td value="{{ hash_data['vote_name'] }}" class="filterable-cell">{{ hash_data['vote_name'] }}</td>
+        <td value="{{ hash_data['vote_hash'] }}" class="filterable-cell">{{ hash_data['vote_hash'] }}</td>
+        <td class="filterable-cell"> BTC-V</td>
+        </tr>
+    {% end %}
     </tbody></table>
 </div>
 <div id="container" class="container" ></div>
@@ -116,7 +94,7 @@ $(function () {
         },
         series: [{
             name: 'Current',
-            data: [1,2,3]
+            data: [{{vote_cnt[0]}},{{vote_cnt[1]}},{{vote_cnt[2]}}]
         }, {
             name: 'Predicted',
             data: [4,5,6]

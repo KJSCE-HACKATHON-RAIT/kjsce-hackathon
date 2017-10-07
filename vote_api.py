@@ -167,6 +167,17 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):        
         print message
         mess = json.loads(message)
+        
+        #vote_cnt
+        vote_data = json.loads(r.get('vote_data'))
+        if mess['vote_name'] == 'rahul':
+            vote_data['vote_cnt'][0]+=1
+        elif mess['vote_name'] == 'modi':
+            vote_data['vote_cnt'][1] +=1
+        elif mess['vote_name'] == 'kejriwal':
+            vote_data['vote_cnt'][2] +=1
+        r.set('vote_data',json.dumps(vote_data))
+        
         pipe = json.loads(r.get('pipeline'))
         pipe[mess['bit_id']] = message
         r.set('pipeline',json.dumps(pipe))
@@ -186,6 +197,10 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         vote_hash = sha.hexdigest()
         mess['bit_id'] = vote_hash
         mess['message'] = "voted for:" + str(mess['vote_name'])
+        
+        hash_datas = json.loads(r.get('hash_data'))
+        hash_datas[str(vote_hash)] = {'vote_name': str(mess['vote_name']), 'vote_hash':str(vote_hash)}
+        r.set('hash_data',json.dumps(hash_datas))
         
         self.add_block(str(mess['vote_name']), vote_hash)
         print "Block Added Successfully:  "
