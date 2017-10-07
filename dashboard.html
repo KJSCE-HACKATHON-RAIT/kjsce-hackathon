@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="stuff, to, help, search, engines, not" name="keywords">
+<meta content="What this page is about." name="description">
+<meta content="Display Webcam Stream" name="title">
+    <title>Smart Railway Survelliance</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+
+    <style>
+table {
+        width: 100%;
+    }
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+thead th {
+    height: 30px;
+
+    /*text-align: left;*/
+}
+
+tbody {
+    height: 120px;
+    overflow-y: auto;
+}
+
+thead {
+    /* fallback */
+}
+
+
+tbody td, thead th {
+    width: 19.2%;
+    float: left;
+}
+    </style>
+
+<div class="container" style="background-color: white">
+  <h2>Latest Blocks</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Hash</th>
+        <th>date-time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr>
+    <tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr>
+            <tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr>
+     <tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr>
+    <tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr><tr>
+        <td class="filterable-cell">Modi</td>
+        <td class="filterable-cell">Kejriwal</td>
+        <td class="filterable-cell">Rahul</td>
+    </tr>
+    </tbody></table>
+</div>
+<div id="container" class="container" ></div>
+
+    <script type="text/javascript">
+$(function () {
+    var myChart = Highcharts.chart('container', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Vote prediction'
+        },
+        xAxis: {
+            categories: ['Rahul', 'Modi', 'Kejriwal']
+        },
+        yAxis: {
+            title: {
+                text: 'Number of votes'
+            }
+        },
+        series: [{
+            name: 'Current',
+            data: [1,2,3]
+        }, {
+            name: 'Predicted',
+            data: [4,5,6]
+        }]
+    });
+});
+    </script>
+
+
+</div>
+
+</body>
+</html>
