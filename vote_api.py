@@ -70,7 +70,7 @@ class login(tornado.web.RequestHandler):
         kk = json.loads(r.get('vote'))
         kk['ctr'] += 1
         if(kk['ctr']%3 == 0):
-            kk['rnd_no'] = random.randint(1,10)
+            kk['rnd_no'] = random.randint(1,9)
         r.set('vote',json.dumps(kk))
         self.render("login.html")
         
@@ -139,7 +139,6 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             cursor.execute(sql)
             db.commit()
             db.close()
-            print "Successfully written to sql: "
         elif tmp == 2:
             #write mongo
             connection = MongoClient("ds149954.mlab.com", 49954)
@@ -147,13 +146,17 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
             db.authenticate('temp', 'temp123')
             #db.mynewcollection.insert({ "temp123" : "new_temp_inserter" })
             db.mynewcollection.insert({ vote_id_hash: vote_hash })
-            print "successfully written to MLab:"
         elif tmp ==3 :
             #write redis
             kk = json.loads(r.get('block'))
-            kk['vote_id_hash'] = kk['vote_hash']
+#            ss = {vote_id_hash: vote_hash}
+            ss = kk['1']
+            ss[str(vote_id_hash)] = str(vote_hash)
+#            kk[str(vote_id_hash)] =kk[str(vote_hash)]
+            kk['1'] = ss
             r.set('block', json.dumps(kk))
-            print "successfully written to redis: "
+        print "successfully written somewhere ?: "
+        print "Block hash: " + str(vote_hash)
         
     def open(self, *args):
         print("open", "WebSocketChatHandler")     
@@ -164,9 +167,14 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
     def on_message(self, message):        
         print message
         mess = json.loads(message)
-        mess1={}
-        mess2={}
-        mess3={}
+        pipe = json.loads(r.get('pipeline'))
+        pipe[mess['bit_id']] = message
+        r.set('pipeline',json.dumps(pipe))
+        
+        vote_table = json.loads(r.get('vote'))
+        vote_table['pipe_ctr'] +=1
+        r.set('pipeline',json.dumps(vote_table))
+        
         #vote_id_hash
         sha = hasher.sha256()
         sha.update(str(mess['vote_name']) + str(mess['vote_type']))
@@ -176,12 +184,18 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         sha = hasher.sha256()
         sha.update(str(mess['bit_id']))
         vote_hash = sha.hexdigest()
+        mess['bit_id'] = vote_hash
+        mess['message'] = "voted for:" + str(mess['vote_name'])
         
         self.add_block(str(mess['vote_name']), vote_hash)
         print "Block Added Successfully:  "
         kk =json.loads(r.get('vote'))
-        for client in clients:
-  		    client.write_message(message)
+        
+        if vote_table['pipe_ctr']%3 == 0:
+            for client in clients:
+                pipe = json.loads(r.get('pipeline'))
+                for val in pipe.values():
+  		            client.write_message(val)
         
     def on_close(self):
         clients.remove(self)

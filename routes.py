@@ -5,8 +5,10 @@ from vote_api import *
 import json
 
 r = redis.StrictRedis(host='localhost', db=4)
-r.set('vote',json.dumps({'ctr':0,'rnd_no':0,'global_bit_id':0, 'count_no':0}))
-r.set('block',json.dumps({}))
+r.set('vote',json.dumps({'ctr':0,'rnd_no':0,'global_bit_id':0, 'count_no':0, 'pipe_ctr':0}))
+r.set('block',json.dumps({'1':{'temp':'temp'}}))
+r.set('pipeline',json.dumps({}))
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Blockchain Voting, ")
